@@ -1,7 +1,7 @@
 from flask import Flask
 app = Flask(__name__) # __name__ Flask裡的套件，代表目前執行的模組，若該程式為主程式，則 name = main
 
-@app.route("/") # @為函式的裝飾 (Decorator)：以函式為基礎，提供附加的功能
+@app.route("/", methods=["GET"]) # @為函式的裝飾 (Decorator)：以函式為基礎，提供附加的功能
 def home():
     return "Hello Flask 2"
 
