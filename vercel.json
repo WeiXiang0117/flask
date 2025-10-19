@@ -1,10 +1,6 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/api/app.py" }
-    ],
-
-    "functions": {
-    "api/app.py": { "runtime": "python3.11" }
-  }
-    
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/app.py" }
+  ]
 }
