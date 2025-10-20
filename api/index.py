@@ -5,5 +5,5 @@ app = Flask(__name__) # __name__ Flask裡的套件，代表目前執行的模組
 def home():
     return "Hello Flask"
 
-if __name__ == "__main__": # 如果以主程式執行
-    app.run() # 立刻啟動伺服器
+# if __name__ == "__main__": # 如果以主程式執行
+#     app.run() # 立刻啟動伺服器
