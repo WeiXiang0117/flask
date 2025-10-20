@@ -1,5 +1,0 @@
-[project]
-name = "my-flask-on-vercel"
-version = "0.1.0"
-requires-python = ">=3.12"   # 想鎖更緊也可以寫成 "==3.11.*"
-dependencies = []                  # 也可以留空，因為你已經有 requirements.txt
