@@ -9,6 +9,20 @@ app = Flask(
     static_url_path="/www"
     ) 
 
+# 建立路徑 /getSum 對應的處理函式
+# 利用要求字串 Query String 提供彈性 /getSum?min=最小數字&max=最大數字
+@app.route("/getSum")
+def getSum(): # min+ (min+1)+(min+2)+(min+3)+...+max
+    minNumber = request.args.get("min",1) # 預設值為1
+    minNumber = int(minNumber)
+    maxNumber = request.args.get("max", 100) # 預設值為100
+    maxNumber = int(maxNumber) # 要將資料型別作轉換，因為輸入的是字串
+    result = 0
+    for n in range(minNumber,maxNumber+1):
+        result += n
+    return "結果： " + str(result) # 將結果轉成字串並送回前端
+
+
 
 # @為函式的裝飾 (Decorator)：以函式為基礎，提供附加的功能
 # 建立路徑 / 對應的處理函式
@@ -28,6 +42,7 @@ def home():
         return "Hello Flask" 
     else:
         return "您好，歡迎光臨"
+
 
 # 建立路徑 /data 對應的處理函式
 @app.route("/data")
