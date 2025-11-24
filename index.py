@@ -1,4 +1,5 @@
 from flask import Flask
+from urllib.parse import unquote
 app = Flask(__name__) # __name__ Flask裡的套件，代表目前執行的模組，若該程式為主程式，則 name = main
 
 
@@ -21,6 +22,7 @@ def test():
 # 建立動態路由：建立路徑 /user/使用者名稱 對應的處理函式
 @app.route("/user/<username>") # <名字可自訂>
 def handleUsername(username):
+    username = unquote(username, encoding="utf-8")
     if username == "偉翔":
         return "歡迎回家 " + username
     else:
