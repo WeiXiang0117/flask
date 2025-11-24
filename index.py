@@ -18,5 +18,14 @@ def handleData(): # 函式名稱沒有固定，僅需寫在裝飾器下方
 def test():
     return "Test Flask"
 
-# if __name__ == "__main__": # 如果以主程式執行
-#     app.run() # 立刻啟動伺服器
+# 建立動態路由：建立路徑 /user/使用者名稱 對應的處理函式
+@app.route("/user/<username>") # <名字可自訂>
+def handleUsername(username):
+    if username == "偉翔":
+        return "歡迎回家 " + username
+    else:
+        return "Hello " + username
+
+# 啟動本機伺服器，可以用 port 來指定開啟埠號
+if __name__ == "__main__": # 如果以主程式執行
+    app.run(port=3000,debug=True) # 立刻啟動伺服器，此為做測試使用
