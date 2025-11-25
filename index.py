@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request # 載入 Request 物件
 from flask import redirect # 載入 Redirect 函式
+from flask import render_template # 載入 render_template 函式
 from urllib.parse import unquote
 import json
 # __name__ Flask裡的套件，代表目前執行的模組，若該程式為主程式，則 name = main
@@ -39,13 +40,15 @@ def home():
     # print("使用者語言偏好", request.headers.get("accept-language"))
     # print("從哪裡導向這裡的網址", request.headers.get("referrer"))
     # 根據使用者語言偏好來決定呈現什麼內容
-    lang = request.headers.get("accept-language")
-    if(lang.startswith("en")): 
-        # 將使用者依據語言作一個目錄的導向 
-        return redirect("/en/")
-    else:
-        # 將使用者依據語言作一個目錄的導向 
-        return redirect("/zh/")
+    # lang = request.headers.get("accept-language")
+    # if(lang.startswith("en")): 
+    #     # 將使用者依據語言作一個目錄的導向 
+    #     return redirect("/en/")
+    # else:
+    #     # 將使用者依據語言作一個目錄的導向 
+    #     return redirect("/zh/")
+    # 直接看 templates 資料夾底下檔案，所以直接輸入檔案名稱，也可帶入變數資料
+    return render_template("index", name="偉翔")
             
 # 針對導向過來的語言網址
 @app.route("/en/")
