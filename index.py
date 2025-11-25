@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import request # 載入 Request 物件
+from flask import redirect # 載入 Redirect 函式
 from urllib.parse import unquote
+import json
 # __name__ Flask裡的套件，代表目前執行的模組，若該程式為主程式，則 name = main
 # 可以設定靜態檔案處理
 app = Flask(
@@ -38,10 +40,27 @@ def home():
     # print("從哪裡導向這裡的網址", request.headers.get("referrer"))
     # 根據使用者語言偏好來決定呈現什麼內容
     lang = request.headers.get("accept-language")
-    if(lang.startswith("en")):            
-        return "Hello Flask" 
+    if(lang.startswith("en")): 
+        # 將使用者依據語言作一個目錄的導向 
+        return redirect("/en/")
     else:
-        return "您好，歡迎光臨"
+        # 將使用者依據語言作一個目錄的導向 
+        return redirect("/zh/")
+            
+# 針對導向過來的語言網址
+@app.route("/en/")
+def index_english():
+    # 利用 json.dumps()將字典資料轉換成字串並傳送到前端
+    return json.dumps({
+            "status":"ok",
+            "text":"Hello Flask"
+            })
+@app.route("/zh/")
+def index_chinese():
+    return json.dumps({
+            "status":"ok",
+            "text":"您好，歡迎光臨"
+            }, ensure_ascii=False) # 指示不要使用 ASCII 編碼處理中文
 
 
 # 建立路徑 /data 對應的處理函式
