@@ -14,7 +14,7 @@ app = Flask(
 
 # 建立路徑 /getSum 對應的處理函式
 # 利用要求字串 Query String 提供彈性 /getSum?min=最小數字&max=最大數字
-@app.route("/getSum")
+@app.route("/caculate")
 def getSum(): # min+ (min+1)+(min+2)+(min+3)+...+max
     minNumber = request.args.get("min",1) # 預設值為1
     minNumber = int(minNumber)
@@ -23,7 +23,7 @@ def getSum(): # min+ (min+1)+(min+2)+(min+3)+...+max
     result = 0
     for n in range(minNumber,maxNumber+1):
         result += n
-    return "結果： " + str(result) # 將結果轉成字串並送回前端
+    return render_template("result.html", finalResult = str(result))
 
 
 
@@ -49,6 +49,12 @@ def home():
     #     return redirect("/zh/")
     # 直接看 templates 資料夾底下檔案，所以直接輸入檔案名稱，也可帶入變數資料
     return render_template("index.html")
+
+# 處理路徑 /show 的對應函式
+@app.route("/show")
+def show():
+    name = request.args.get("name", " ")
+    return "歡迎光臨, " + name
 
 # 處理路徑 page
 @app.route("/page")
