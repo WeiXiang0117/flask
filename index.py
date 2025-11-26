@@ -48,8 +48,16 @@ def home():
     #     # 將使用者依據語言作一個目錄的導向 
     #     return redirect("/zh/")
     # 直接看 templates 資料夾底下檔案，所以直接輸入檔案名稱，也可帶入變數資料
-    return render_template("index", name="偉翔")
-            
+    return render_template("index.html")
+
+# 處理路徑 page
+@app.route("/page")
+def  page():
+    return render_template("page.html")
+
+# 建立 Application 物件，設定靜態檔案的路徑處理
+
+
 # 針對導向過來的語言網址
 @app.route("/en/")
 def index_english():
