@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request # 載入 Request 物件
 from flask import redirect # 載入 Redirect 函式
 from flask import render_template # 載入 render_template 函式
+from flask import session # 從 flask 套件載入 session 函式，接著還要多設定 secret key
 from urllib.parse import unquote
 import json
 # __name__ Flask裡的套件，代表目前執行的模組，若該程式為主程式，則 name = main
@@ -11,25 +12,12 @@ app = Flask(
     static_folder="public", # 將 static 資料夾改名成 public
     static_url_path="/www"
     ) 
-
-# 建立路徑 /getSum 對應的處理函式
-# 利用要求字串 Query String 提供彈性 /getSum?min=最小數字&max=最大數字
-@app.route("/caculate")
-def getSum(): # min+ (min+1)+(min+2)+(min+3)+...+max
-    minNumber = request.args.get("min",1) # 預設值為1
-    minNumber = int(minNumber)
-    maxNumber = request.args.get("max", 100) # 預設值為100
-    maxNumber = int(maxNumber) # 要將資料型別作轉換，因為輸入的是字串
-    result = 0
-    for n in range(minNumber,maxNumber+1):
-        result += n
-    return render_template("result.html", finalResult = str(result))
-
-
+# 因應 session 的建立，設定 session 密鑰，為一個任意字串，但不能讓其他人知道
+app.secret_key= "any string but secret"
 
 # @為函式的裝飾 (Decorator)：以函式為基礎，提供附加的功能
-# 建立路徑 / 對應的處理函式
-@app.route("/") # 用來回應 / 的處理函式
+# 同時使用 GET 與 POST ，方法，建立路徑 / 對應的處理函式，而不寫 methods 則預設 GET 方法
+@app.route("/", methods=["GET","POST"]) # 用來回應 / 的處理函式
 def home():
     # print("請求的方法", request.method)
     # print("通訊的協定", request.scheme)
@@ -50,10 +38,36 @@ def home():
     # 直接看 templates 資料夾底下檔案，所以直接輸入檔案名稱，也可帶入變數資料
     return render_template("index.html")
 
-# 處理路徑 /show 的對應函式
-@app.route("/show")
-def show():
+#利用 GET 方法要求字串 Query String 提供彈性
+@app.route("/caculate", methods=["GET"])
+def getSum(): # min+ (min+1)+(min+2)+(min+3)+...+max
+    minNumber = request.args.get("min",1) # 預設值為1
+    minNumber = int(minNumber)
+    maxNumber = request.args.get("max",1) # 預設值為100
+    maxNumber = int(maxNumber) # 要將資料型別作轉換，因為輸入的是字串
+    result = 0
+    for n in range(minNumber,maxNumber+1):
+        result += n
+    return render_template("result.html", finalResult = str(result))
+
+# 使用 GET 方法處理路徑 /hello?name=使用者名字
+# 應用 session
+@app.route("/hello")
+def hello():
     name = request.args.get("name", " ")
+    session["username"] = name
+    return "你好, " + name
+
+# 使用 GET 方法處理路徑 /talk
+@app.route("/talk")
+def talk():
+    name = session["username"]
+    return name + ", 很高興認識你"
+
+# 利用 POST 方法處理路徑 /show 的對應函式
+@app.route("/show", methods=["POST"])
+def show():
+    name = request.form["name"]
     return "歡迎光臨, " + name
 
 # 處理路徑 page
