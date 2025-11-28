@@ -10,7 +10,7 @@ import json
 app = Flask(
     __name__,
     static_folder="public", # 將 static 資料夾改名成 public
-    static_url_path="/www"
+    static_url_path="/"
     ) 
 # 因應 session 的建立，設定 session 密鑰，為一個任意字串，但不能讓其他人知道
 app.secret_key= "any string but secret"
@@ -54,8 +54,8 @@ def getSum(): # min+ (min+1)+(min+2)+(min+3)+...+max
 # 應用 session
 @app.route("/hello")
 def hello():
-    name = request.args.get("name", " ")
-    session["username"] = name
+    name = request.args.get("name", " ") 
+    session["username"] = name # session["欄位名稱"] = 資料
     return "你好, " + name
 
 # 使用 GET 方法處理路徑 /talk
